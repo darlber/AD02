@@ -4,7 +4,7 @@ import org.example.datos.*;
 
 import java.io.*;
 import java.io.RandomAccessFile;
-import java.util.Random;
+
 import java.util.Scanner;
 
 public class Main_SerradillaGutierrezAlbertoActualiza {
@@ -14,7 +14,7 @@ public class Main_SerradillaGutierrezAlbertoActualiza {
         //actualizarViajeros();
         //actualizarCliente();
         //mostrarViajesActualizados();
-        mostrarDatosViaje();
+        //mostrarDatosViaje();
 
 
     }
@@ -328,4 +328,13 @@ public class Main_SerradillaGutierrezAlbertoActualiza {
             }
         }
     }
+
+    //Ejercicio 5, eliminar clientes del fichero aleatorio
+    private static void eliminarClientes() throws IOException{
+
+
+
+
+    }
+
 }
