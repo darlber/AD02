@@ -289,14 +289,14 @@ public class Main_SerradillaGutierrezAlbertoActualiza {
                             long punteroClientes = (idCliente - 1) * 52;
                             clientes.seek(punteroClientes);
 
-                            char[] nombreArray = new char[18];
+                            char[] nombre = new char[18];
 
-                            for (int i = 0; i < nombreArray.length; i++) {
-                                nombreArray[i] = clientes.readChar();
+                            for (int i = 0; i < nombre.length; i++) {
+                                nombre[i] = clientes.readChar();
                             }
 
+                            String nombreString = new String(nombre).trim();
 
-                            String nombreCliente = new String(nombreArray).trim();
                             if (!hayReservas) {
                                 System.out.println("=================================");
                                 System.out.println(descripcionString + ", Viajeros: " + viajeros);
@@ -305,7 +305,7 @@ public class Main_SerradillaGutierrezAlbertoActualiza {
                                 System.out.println("=== ==================== ======");
                                 hayReservas = true;
                             }
-                            System.out.printf("%3d %-22s %d\n", idCliente, nombreCliente, reserva.getPlazas());
+                            System.out.printf("%3d %-22s %d\n", idCliente, nombreString, reserva.getPlazas());
                             // Suma 1 a cada iteración, a cada persona de la lista
                             totalClientes++;
                         }
