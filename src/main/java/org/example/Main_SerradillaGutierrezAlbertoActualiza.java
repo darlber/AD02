@@ -269,13 +269,7 @@ public class Main_SerradillaGutierrezAlbertoActualiza {
                     viajes.close();
                     continue; // Volver al principio del bucle
                 }
-
-                // Mostrar la información del viaje con la misma ID
-                System.out.println("=================================");
-                System.out.println(descripcionString + ", Viajeros: " + viajeros);
-                System.out.println("=================================");
-                System.out.println(" ID NOMBRE               PLAZAS ");
-                System.out.println("=== ==================== ======");
+                ;
 
                 //pasamos a comprobar reservas
                 boolean hayReservas = false;
@@ -301,12 +295,18 @@ public class Main_SerradillaGutierrezAlbertoActualiza {
                                 nombreArray[i] = clientes.readChar();
                             }
 
-                            String nombreCliente = new String(nombreArray).trim();
 
-                            // Mostrar la reserva del cliente
+                            String nombreCliente = new String(nombreArray).trim();
+                            if (!hayReservas) {
+                                System.out.println("=================================");
+                                System.out.println(descripcionString + ", Viajeros: " + viajeros);
+                                System.out.println("=================================");
+                                System.out.println(" ID NOMBRE               PLAZAS ");
+                                System.out.println("=== ==================== ======");
+                                hayReservas = true;
+                            }
                             System.out.printf("%3d %-22s %d\n", idCliente, nombreCliente, reserva.getPlazas());
-                            hayReservas = true;
-                            //suma 1 a cada iteración, a cada persona de la lista
+                            // Suma 1 a cada iteración, a cada persona de la lista
                             totalClientes++;
                         }
                     } catch (EOFException e) {
@@ -315,20 +315,17 @@ public class Main_SerradillaGutierrezAlbertoActualiza {
                         throw new RuntimeException(e);
                     }
                 }
-
                 // Si no hay reservas para este viaje
                 if (!hayReservas) {
                     System.out.println("NO HAY RESERVAS");
+                    System.out.println("=================================");
                 } else {
                     System.out.println("\nNúmero de clientes: " + totalClientes);
+                    System.out.println("=================================");
                 }
-
-                System.out.println("=================================");
                 viajes.close();
                 dataIS.close();
             }
         }
     }
-
 }
-
