@@ -3,7 +3,7 @@ package org.example.datos;
 
 
 public class Viaje  {
-	
+
 	private int id;
 	private String descripcion;
 	private String fechasalida;
