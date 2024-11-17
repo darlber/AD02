@@ -270,7 +270,6 @@ public class Main_SerradillaGutierrezAlbertoActualiza {
                     viajes.close();
                     continue; // Volver al principio del bucle
                 }
-                ;
 
                 //pasamos a comprobar reservas
                 boolean hayReservas = false;
