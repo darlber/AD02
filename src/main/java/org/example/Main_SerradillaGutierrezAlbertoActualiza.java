@@ -259,13 +259,14 @@ public class Main_SerradillaGutierrezAlbertoActualiza {
                         viajeEncontrado = true;
                         break;
                     } else {
-                        //saltamos el resto de bytes si no encontramos
+                        //saltamos el resto de bytes si no encontramos coincidencias con id
                         viajes.skipBytes(+64 + 20 + 8 + 4 + 4);
                     }
                 }
                 // Si no se encuentra el viaje, mostrar mensaje de error
                 if (!viajeEncontrado) {
                     System.out.println("NO EXISTE EL ID DE VIAJE");
+                    System.out.println("=================================");
                     viajes.close();
                     continue; // Volver al principio del bucle
                 }
