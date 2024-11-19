@@ -5,17 +5,18 @@ import org.example.datos.*;
 import java.io.*;
 import java.io.RandomAccessFile;
 
+
 import java.util.Scanner;
 
 public class Main_SerradillaGutierrezAlbertoActualiza {
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, ClassNotFoundException {
 
-        //actualizarViajeros();
-        //actualizarCliente();
-        //mostrarViajesActualizados();
-        //mostrarDatosViaje();
-
+        actualizarViajeros();
+        actualizarCliente();
+        mostrarViajesActualizados();
+        mostrarDatosViaje();
+        menuEliminar();
 
     }
 
@@ -153,7 +154,7 @@ public class Main_SerradillaGutierrezAlbertoActualiza {
         char[] descripcion = new char[32]; // Para leer la descripción del viaje
         char aux;
         char[] fechasal = new char[10];  // Para leer la fecha de salida
-        long puntero;
+
 
         // Mostramos los encabezados
         System.out.println("==========================================================");
@@ -292,7 +293,8 @@ public class Main_SerradillaGutierrezAlbertoActualiza {
                             char[] nombre = new char[18];
 
                             for (int i = 0; i < nombre.length; i++) {
-                                nombre[i] = clientes.readChar();
+                                aux = clientes.readChar();
+                                nombre[i] = aux;
                             }
 
                             String nombreString = new String(nombre).trim();
@@ -312,7 +314,7 @@ public class Main_SerradillaGutierrezAlbertoActualiza {
                     } catch (EOFException e) {
                         break;
                     } catch (ClassNotFoundException e) {
-                        throw new RuntimeException(e);
+                        e.printStackTrace();
                     }
                 }
                 // Si no hay reservas para este viaje
@@ -330,11 +332,263 @@ public class Main_SerradillaGutierrezAlbertoActualiza {
     }
 
     //Ejercicio 5, eliminar clientes del fichero aleatorio
-    private static void eliminarClientes() throws IOException{
+    private static void menuEliminar() throws IOException, ClassNotFoundException {
+        Scanner sn = new Scanner(System.in);
+        boolean salir = false;
 
 
+        while (!salir) {
+            //menu
+            System.out.println("Introduce el ID del cliente a eliminar. 0 para salir:");
+            int opcionID = sn.nextInt();
+
+            RandomAccessFile viajes = new RandomAccessFile("Viajes.dat", "r");
+            File fichero = new File("Reservas.dat");
+            ObjectInputStream dataIS = new ObjectInputStream(new FileInputStream(fichero));
+            int reservas = contarReservas(opcionID);
+
+            char aux;
+            long punteroCliente = (opcionID - 1) * 52;
+
+            if (opcionID == 0) {
+                listarClientes();
+                salir = true;
+
+            } else {
+                if (!verificarID(opcionID)) {
+                    System.out.println("NO EXISTE EL ID DE CLIENTE");
+                    System.out.println("===================================================================");
+                    continue;  // Si no existe, continuar con el siguiente ciclo
+
+                }
+                if (reservas > 0) {
+                    // Si tiene reservas, mostrar los viajes
+                    String nombre = obtenerNombreCliente(opcionID);
+                    String viajesCliente = mostrarViajesCliente(opcionID);
+
+                    System.out.println(nombre + ", Viajes contratados: " + reservas);
+                    System.out.println(viajesCliente);
+                } else {
+                    System.out.println("NO HA CONTRATADO NINGÚN VIAJE - eliminar");
+                    if (eliminarClientes(opcionID)) {
+                        System.out.println("Cliente: " + opcionID + ", eliminado");
+                        System.out.println("===================================================================");
 
 
+                    } else {
+                        System.out.println("No se ha podido eliminar el cliente");
+                    }
+                }
+            }
+        }
     }
 
+    public static void listarClientes() throws IOException {
+        RandomAccessFile clientesFile = new RandomAccessFile("Clientes.dat", "r"); // Abrir en modo lectura
+        System.out.println("LISTADO DE LOS CLIENTES");
+        System.out.println("==================================================");
+
+        try {
+            clientesFile.seek(0); // Comenzar desde el inicio del archivo
+
+            while (clientesFile.getFilePointer() < clientesFile.length()) {
+                int id = clientesFile.readInt(); // Leer ID
+                StringBuilder nombreBuilder = new StringBuilder();
+
+                // Leer nombre (36 bytes: 18 caracteres de 2 bytes cada uno)
+                for (int i = 0; i < 18; i++) {
+                    nombreBuilder.append(clientesFile.readChar());
+                }
+                String nombre = nombreBuilder.toString().trim();
+                int viajesContratados = clientesFile.readInt(); // Leer viajes contratados
+                double importeTotal = clientesFile.readDouble(); // Leer importe total
+
+                // Validar el registro para omitir datos vacíos
+                if (id == 0 && nombre.isEmpty() && viajesContratados == 0 && importeTotal == 0.00) {
+                    // Registro vacío (espacios no inicializados)
+                    continue;
+                }
+
+                // Mostrar el cliente, incluidos eliminados
+                System.out.printf("ID: %-3d, Nombre: %-18s, Viajes Contratados: %-3d, Importe: %,.2f\n",
+                        id, nombre, viajesContratados, importeTotal);
+            }
+        } finally {
+            clientesFile.close(); // Asegurar el cierre del archivo
+        }
+    }
+
+
+    private static boolean eliminarClientes(int id) throws IOException {
+        RandomAccessFile clientes = new RandomAccessFile("Clientes.dat", "rw");
+
+        try {
+            long punteroCliente = (id - 1) * 52; // Calculamos la posición del cliente
+            if (verificarID(id)) { // Verificamos si el ID existe
+                clientes.seek(punteroCliente);
+
+                int idLeido = clientes.readInt();
+                if (idLeido == id) {
+                    clientes.seek(punteroCliente);
+                    clientes.writeInt(id);
+                    StringBuffer nombreBuffer = new StringBuffer("*eliminado*");
+                    nombreBuffer.setLength(18);
+                    clientes.writeChars(nombreBuffer.toString());
+                    clientes.writeInt(-1);
+                    clientes.writeDouble(-1.00);
+                    return true;
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            clientes.close();
+        }
+
+        return false; // Retornamos false si el cliente no existe o no se pudo eliminar
+    }
+
+
+    public static int contarReservas(int id) throws IOException {
+        int reservas = 0;
+
+        try (RandomAccessFile clientes = new RandomAccessFile("Clientes.dat", "r")) {
+            // Recorrer secuencialmente el archivo
+            while (clientes.getFilePointer() < clientes.length()) {
+                int idCliente = clientes.readInt(); // Leer el ID del registro actual
+                if (idCliente == id) {
+                    clientes.skipBytes(36); // Saltar el nombre (18 caracteres * 2 bytes)
+                    reservas = clientes.readInt(); // Leer el número de viajes contratados
+                    break; // Detener el bucle una vez encontrado
+                } else {
+                    // Saltar al siguiente registro
+                    clientes.skipBytes(36+4+8); // Saltar nombre, viajes contratados, y importe
+                }
+            }
+        }
+
+        return reservas;
+    }
+
+
+    public static String obtenerNombreCliente(int id) throws IOException {
+        RandomAccessFile clientes = new RandomAccessFile("Clientes.dat", "r");
+        long posicion = (id - 1) * 52;
+        char aux;
+
+        clientes.seek(posicion);
+        char[] nombreCliente = new char[18];
+        for (int i = 0; i < 18; i++) {
+            aux = clientes.readChar();
+            nombreCliente[i] = aux;
+        }
+        String nombreString = new String(nombreCliente).trim();
+        clientes.close();
+        return nombreString;
+    }
+
+    public static String mostrarViajesCliente(int id) throws IOException {
+        RandomAccessFile viajes = new RandomAccessFile("Viajes.dat", "r");
+        RandomAccessFile clientes = new RandomAccessFile("Clientes.dat", "r");
+
+        StringBuilder info = new StringBuilder();
+        info.append("===================================================================\n");
+        info.append("ID   DESCRIPCION                    FEC SALIDA PVP     PLAZAS\n");
+        info.append("=== =============================== ========== ========= ======\n");
+        double importeTotal = 0.0;
+
+
+        // Abrir el archivo de reservas
+        try (ObjectInputStream dataIS = new ObjectInputStream(new FileInputStream("Reservas.dat"))) {
+            while (true) {
+                Reserva reserva = (Reserva) dataIS.readObject();
+                if (reserva.getIdcliente() == id) {
+
+                    int idViaje = reserva.getIdviaje();
+                    int plazas = reserva.getPlazas();
+                    int idCliente = reserva.getIdcliente();
+
+                    char aux;
+
+                    long punteroViajes = (idViaje - 1) * 104;
+                    viajes.seek(punteroViajes);
+
+
+                    int idV = viajes.readInt();
+                    char[] descripcion = new char[32];
+                    for (int i = 0; i < descripcion.length; i++) {
+                        aux = viajes.readChar();
+                        descripcion[i] = aux;
+
+                    }
+                    String descripcionString = new String(descripcion).trim();
+
+                    char[] fechaSal = new char[10];
+                    for (int i = 0; i < fechaSal.length; i++) {
+                        aux = viajes.readChar();
+                        fechaSal[i] = aux;
+                    }
+                    String fechaSalidaString = new String(fechaSal).trim();
+
+                    double pvp = viajes.readDouble();
+                    double importe = plazas * pvp;
+                    viajes.skipBytes(4 + 4); //saltamos dias y viajeros
+
+                    long punteroClientes = (idCliente - 1) * 52;
+                    clientes.seek(punteroClientes);
+                    int idC = clientes.readInt();
+
+                    if (idCliente == idC) {
+                        clientes.seek(punteroClientes + 4 + 36 + 4);
+
+
+                        importeTotal += importe;
+
+                        // Imprimimos la información del viaje
+                        info.append(String.format("%-3d %-30s %-10s %-10.2f %-5d \n", idViaje, descripcionString, fechaSalidaString, pvp, plazas));
+                    }
+
+                }
+            }
+
+        } catch (EOFException e) {
+
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        // Mostrar el importe total de los viajes contratados
+        info.append(String.format("\nImporte total : %.2f\n", importeTotal));
+        info.append("===================================================================");
+        return info.toString();
+    }
+
+    public static boolean verificarID(int id) throws IOException {
+        RandomAccessFile clientes = new RandomAccessFile("Clientes.dat", "r");
+
+        try {
+            // Iterar sobre todos los registros de clientes
+            while (clientes.getFilePointer() < clientes.length()) {
+                // Leer el ID actual
+                int idCliente = clientes.readInt();
+
+                // Si encontramos el ID, retornamos true
+                if (idCliente == id) {
+                    clientes.close();
+                    return true;
+                }
+
+                // Saltar el resto de los datos (nombre, viajes contratados, importe total)
+                clientes.skipBytes(48);
+            }
+        } catch (EOFException e) {
+            // Manejo del fin del archivo
+        } finally {
+            clientes.close();
+        }
+
+        // Si no encontramos el ID, retornamos false
+        return false;
+    }
 }
+
+//TODO resource leaks y cosas que ya no utilizo closear.
