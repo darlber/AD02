@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<listaViajes>
+    <TODOS_LOS_VIAJES>
+        <Un_Viaje>
+            <id>14</id>
+            <descripcion>Alemania Oeste</descripcion>
+            <fechaSalida>01/08/2025</fechaSalida>
+            <viajeros>27</viajeros>
+            <Lista_de_Clientes>
+                <Un_Cliente>
+                    <id>10</id>
+                    <nombre>Maria Sanz</nombre>
+                    <plazas>12</plazas>
+                </Un_Cliente>
+                <Un_Cliente>
+                    <id>12</id>
+                    <nombre>Daniel Sanchez</nombre>
+                    <plazas>6</plazas>
+                </Un_Cliente>
+                <Un_Cliente>
+                    <id>15</id>
+                    <nombre>Pedro Martin</nombre>
+                    <plazas>9</plazas>
+                </Un_Cliente>
+                <Un_Cliente>
+                    <id>18</id>
+                    <nombre>Maria Jose Perez</nombre>
+                    <plazas>6</plazas>
+                </Un_Cliente>
+            </Lista_de_Clientes>
+        </Un_Viaje>
+        <Un_Viaje>
+            <id>16</id>
+            <descripcion>China Gran Muralla</descripcion>
+            <fechaSalida>25/09/2025</fechaSalida>
+            <viajeros>36</viajeros>
+            <Lista_de_Clientes>
+                <Un_Cliente>
+                    <id>1</id>
+                    <nombre>Alicia Sanz</nombre>
+                    <plazas>12</plazas>
+                </Un_Cliente>
+                <Un_Cliente>
+                    <id>2</id>
+                    <nombre>Raquel Martinez</nombre>
+                    <plazas>12</plazas>
+                </Un_Cliente>
+                <Un_Cliente>
+                    <id>4</id>
+                    <nombre>Dora Suela</nombre>
+                    <plazas>9</plazas>
+                </Un_Cliente>
+                <Un_Cliente>
+                    <id>10</id>
+                    <nombre>Maria Sanz</nombre>
+                    <plazas>12</plazas>
+                </Un_Cliente>
+                <Un_Cliente>
+                    <id>15</id>
+                    <nombre>Pedro Martin</nombre>
+                    <plazas>9</plazas>
+                </Un_Cliente>
+            </Lista_de_Clientes>
+        </Un_Viaje>
+        <Un_Viaje>
+            <id>18</id>
+            <descripcion>Croacia, Perla del Adriático</descripcion>
+            <fechaSalida>01/08/2025</fechaSalida>
+            <viajeros>0</viajeros>
+            <Lista_de_Clientes/>
+        </Un_Viaje>
+        <Un_Viaje>
+            <id>20</id>
+            <descripcion>Crucero por el mar Mediterráneo</descripcion>
+            <fechaSalida>01/08/2025</fechaSalida>
+            <viajeros>27</viajeros>
+            <Lista_de_Clientes>
+                <Un_Cliente>
+                    <id>1</id>
+                    <nombre>Alicia Sanz</nombre>
+                    <plazas>12</plazas>
+                </Un_Cliente>
+                <Un_Cliente>
+                    <id>2</id>
+                    <nombre>Raquel Martinez</nombre>
+                    <plazas>12</plazas>
+                </Un_Cliente>
+                <Un_Cliente>
+                    <id>4</id>
+                    <nombre>Dora Suela</nombre>
+                    <plazas>9</plazas>
+                </Un_Cliente>
+                <Un_Cliente>
+                    <id>5</id>
+                    <nombre>Julio Reyes</nombre>
+                    <plazas>15</plazas>
+                </Un_Cliente>
+                <Un_Cliente>
+                    <id>11</id>
+                    <nombre>Fernando Alia</nombre>
+                    <plazas>6</plazas>
+                </Un_Cliente>
+            </Lista_de_Clientes>
+        </Un_Viaje>
+        <Un_Viaje>
+            <id>22</id>
+            <descripcion>Cuba y Miami</descripcion>
+            <fechaSalida>15/09/2025</fechaSalida>
+            <viajeros>6</viajeros>
+            <Lista_de_Clientes>
+                <Un_Cliente>
+                    <id>5</id>
+                    <nombre>Julio Reyes</nombre>
+                    <plazas>15</plazas>
+                </Un_Cliente>
+            </Lista_de_Clientes>
+        </Un_Viaje>
+        <Un_Viaje>
+            <id>24</id>
+            <descripcion>La Toscana</descripcion>
+            <fechaSalida>01/09/2025</fechaSalida>
+            <viajeros>57</viajeros>
+            <Lista_de_Clientes>
+                <Un_Cliente>
+                    <id>1</id>
+                    <nombre>Alicia Sanz</nombre>
+                    <plazas>12</plazas>
+                </Un_Cliente>
+                <Un_Cliente>
+                    <id>2</id>
+                    <nombre>Raquel Martinez</nombre>
+                    <plazas>12</plazas>
+                </Un_Cliente>
+                <Un_Cliente>
+                    <id>4</id>
+                    <nombre>Dora Suela</nombre>
+                    <plazas>9</plazas>
+                </Un_Cliente>
+                <Un_Cliente>
+                    <id>5</id>
+                    <nombre>Julio Reyes</nombre>
+                    <plazas>15</plazas>
+                </Un_Cliente>
+                <Un_Cliente>
+                    <id>10</id>
+                    <nombre>Maria Sanz</nombre>
+                    <plazas>12</plazas>
+                </Un_Cliente>
+                <Un_Cliente>
+                    <id>11</id>
+                    <nombre>Fernando Alia</nombre>
+                    <plazas>6</plazas>
+                </Un_Cliente>
+                <Un_Cliente>
+                    <id>12</id>
+                    <nombre>Daniel Sanchez</nombre>
+                    <plazas>6</plazas>
+                </Un_Cliente>
+                <Un_Cliente>
+                    <id>15</id>
+                    <nombre>Pedro Martin</nombre>
+                    <plazas>9</plazas>
+                </Un_Cliente>
+                <Un_Cliente>
+                    <id>18</id>
+                    <nombre>Maria Jose Perez</nombre>
+                    <plazas>6</plazas>
+                </Un_Cliente>
+            </Lista_de_Clientes>
+        </Un_Viaje>
+        <Un_Viaje>
+            <id>26</id>
+            <descripcion>Moscu San Petersburgo</descripcion>
+            <fechaSalida>10/08/2025</fechaSalida>
+            <viajeros>0</viajeros>
+            <Lista_de_Clientes/>
+        </Un_Viaje>
+        <Un_Viaje>
+            <id>28</id>
+            <descripcion>Noruega Mágica</descripcion>
+            <fechaSalida>20/08/2025</fechaSalida>
+            <viajeros>0</viajeros>
+            <Lista_de_Clientes/>
+        </Un_Viaje>
+        <Un_Viaje>
+            <id>30</id>
+            <descripcion>Paises Bajos</descripcion>
+            <fechaSalida>10/08/2025</fechaSalida>
+            <viajeros>0</viajeros>
+            <Lista_de_Clientes/>
+        </Un_Viaje>
+        <Un_Viaje>
+            <id>32</id>
+            <descripcion>Praga, Viena, Budapest</descripcion>
+            <fechaSalida>20/08/2025</fechaSalida>
+            <viajeros>0</viajeros>
+            <Lista_de_Clientes/>
+        </Un_Viaje>
+        <Un_Viaje>
+            <id>34</id>
+            <descripcion>Costa Brava</descripcion>
+            <fechaSalida>01/09/2025</fechaSalida>
+            <viajeros>0</viajeros>
+            <Lista_de_Clientes/>
+        </Un_Viaje>
+        <Un_Viaje>
+            <id>35</id>
+            <descripcion>Costa de Almeria</descripcion>
+            <fechaSalida>15/09/2025</fechaSalida>
+            <viajeros>0</viajeros>
+            <Lista_de_Clientes/>
+        </Un_Viaje>
+        <Un_Viaje>
+            <id>36</id>
+            <descripcion>Extremadura al completo</descripcion>
+            <fechaSalida>25/09/2025</fechaSalida>
+            <viajeros>0</viajeros>
+            <Lista_de_Clientes/>
+        </Un_Viaje>
+        <Un_Viaje>
+            <id>37</id>
+            <descripcion>Galicia Costa da Morte</descripcion>
+            <fechaSalida>10/08/2025</fechaSalida>
+            <viajeros>21</viajeros>
+            <Lista_de_Clientes>
+                <Un_Cliente>
+                    <id>1</id>
+                    <nombre>Alicia Sanz</nombre>
+                    <plazas>12</plazas>
+                </Un_Cliente>
+                <Un_Cliente>
+                    <id>2</id>
+                    <nombre>Raquel Martinez</nombre>
+                    <plazas>12</plazas>
+                </Un_Cliente>
+                <Un_Cliente>
+                    <id>5</id>
+                    <nombre>Julio Reyes</nombre>
+                    <plazas>15</plazas>
+                </Un_Cliente>
+                <Un_Cliente>
+                    <id>10</id>
+                    <nombre>Maria Sanz</nombre>
+                    <plazas>12</plazas>
+                </Un_Cliente>
+            </Lista_de_Clientes>
+        </Un_Viaje>
+        <Un_Viaje>
+            <id>38</id>
+            <descripcion>Huelva</descripcion>
+            <fechaSalida>20/08/2025</fechaSalida>
+            <viajeros>9</viajeros>
+            <Lista_de_Clientes>
+                <Un_Cliente>
+                    <id>5</id>
+                    <nombre>Julio Reyes</nombre>
+                    <plazas>15</plazas>
+                </Un_Cliente>
+            </Lista_de_Clientes>
+        </Un_Viaje>
+        <Un_Viaje>
+            <id>39</id>
+            <descripcion>Oropesa del Mar con balneario</descripcion>
+            <fechaSalida>01/09/2025</fechaSalida>
+            <viajeros>0</viajeros>
+            <Lista_de_Clientes/>
+        </Un_Viaje>
+        <Un_Viaje>
+            <id>40</id>
+            <descripcion>Zaragoza y Teruel</descripcion>
+            <fechaSalida>10/08/2025</fechaSalida>
+            <viajeros>0</viajeros>
+            <Lista_de_Clientes/>
+        </Un_Viaje>
+        <Un_Viaje>
+            <id>45</id>
+            <descripcion>Paris romántico</descripcion>
+            <fechaSalida>01/08/2025</fechaSalida>
+            <viajeros>0</viajeros>
+            <Lista_de_Clientes/>
+        </Un_Viaje>
+    </TODOS_LOS_VIAJES>
+</listaViajes>
