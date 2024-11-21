@@ -6,6 +6,7 @@ import java.io.*;
 import java.io.RandomAccessFile;
 
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Main_SerradillaGutierrezAlbertoActualiza {
@@ -102,8 +103,7 @@ public class Main_SerradillaGutierrezAlbertoActualiza {
                 viajes.seek(punteroViajes);
 
                 //buscaremos el valor del pvp, almcenando y saltando id, descripcion y fecha salida
-                int idV = viajes.readInt();
-
+                viajes.readInt();
                 viajes.skipBytes(64 + 20);
                 double pvp = viajes.readDouble();
                 double importe = plazas * pvp;
@@ -140,6 +140,7 @@ public class Main_SerradillaGutierrezAlbertoActualiza {
             e.printStackTrace();
         } finally {
             // Cerramos los archivos
+            clientes.close();
             viajes.close();
             dataIS.close();
         }
@@ -147,21 +148,20 @@ public class Main_SerradillaGutierrezAlbertoActualiza {
 
     //Ejercicio 3, Mostrar de manera secuencial el archivo RAF
     private static void mostrarViajesActualizados() throws IOException {
-        RandomAccessFile viajes = new RandomAccessFile("Viajes.dat", "r");
 
         // Definimos las variables necesarias para leer los campos
-        int id, viajeros;
-        char[] descripcion = new char[32]; // Para leer la descripción del viaje
-        char aux;
-        char[] fechasal = new char[10];  // Para leer la fecha de salida
 
 
         // Mostramos los encabezados
-        System.out.println("==========================================================");
-        System.out.println("ID          DESCRIPCION             FEC SALIDA VIAJEROS");
-        System.out.println("=== =============================== ========== ========");
 
-        try {
+        try (RandomAccessFile viajes = new RandomAccessFile("Viajes.dat", "r")) {
+            int id, viajeros;
+            char[] descripcion = new char[32]; // Para leer la descripción del viaje
+            char aux;
+            char[] fechasal = new char[10];  // Para leer la fecha de salida
+            System.out.println("==========================================================");
+            System.out.println("ID          DESCRIPCION             FEC SALIDA VIAJEROS");
+            System.out.println("=== =============================== ========== ========");
             // Leemos todos los registros en el archivo de viajes
             while ((viajes.getFilePointer() < viajes.length())) {
                 // Leemos el ID del viaje
@@ -203,28 +203,42 @@ public class Main_SerradillaGutierrezAlbertoActualiza {
         } catch (EOFException e) {
             // Cuando llegamos al final del archivo de viajes, terminamos el proceso
             System.out.println("Se ha mostrado el listado completo de viajes.");
-        } finally {
-            // Cerramos el archivo
-            viajes.close();
         }
+        // Cerramos el archivo
     }
 
     //Ejercicio 4, metodo para mostrar los diferentes datos de un viaje
     private static void mostrarDatosViaje() throws IOException {
-
-        Scanner sn = new Scanner(System.in);
         boolean salir = false;
-        byte opcion;
+        Scanner sn = new Scanner(System.in);
         while (!salir) {
-            /*
-            para este ejercicio necesitamos 4 cosas principalmente:
-            1. comprobar la idViaje y mostrar los datos del viaje
-            2. comprobar si hay o no reservas, y obtener datos de los clientes en clientes.dat
-            3. en caso de que no existe id mostrarlo
-            4. en caso de que exista id pero no reservas, mostrarlo.
-             */
+
+            boolean idValido = false;
+            byte opcion = -1;
+
+                /*
+                para este ejercicio necesitamos 4 cosas principalmente:
+                1. comprobar la idViaje y mostrar los datos del viaje
+                2. comprobar si hay o no reservas, y obtener datos de los clientes en clientes.dat
+                3. en caso de que no existe id mostrarlo
+                4. en caso de que exista id pero no reservas, mostrarlo.
+                 */
             System.out.println("Introduce la ID del viaje a consultar. 0 para salir");
-            opcion = sn.nextByte();
+
+            while (!idValido) {
+                try {
+                    opcion = sn.nextByte();
+                    if (opcion < 0) {
+                        System.out.println("El ID del viaje debe ser un número positivo.");
+                    } else {
+                        idValido = true;
+                    }
+                } catch (InputMismatchException e) {
+                    System.out.println("Por favor, introduce un número válido para el ID del viaje.");
+                    sn.next();
+                }
+            }
+
             RandomAccessFile viajes = new RandomAccessFile("Viajes.dat", "r");
             RandomAccessFile clientes = new RandomAccessFile("Clientes.dat", "r");
             File fichero = new File("Reservas.dat");
@@ -325,30 +339,44 @@ public class Main_SerradillaGutierrezAlbertoActualiza {
                     System.out.println("\nNúmero de clientes: " + totalClientes);
                     System.out.println("=================================");
                 }
+                clientes.close();
                 viajes.close();
                 dataIS.close();
             }
         }
     }
 
+
     //Ejercicio 5, eliminar clientes del fichero aleatorio
     private static void menuEliminar() throws IOException, ClassNotFoundException {
-        Scanner sn = new Scanner(System.in);
         boolean salir = false;
 
 
+        Scanner sn = new Scanner(System.in);
+
         while (!salir) {
+            int opcionID = -1;
             //menu
             System.out.println("Introduce el ID del cliente a eliminar. 0 para salir:");
-            int opcionID = sn.nextInt();
+            boolean idValido = false;
+            while (!idValido) {
+                try {
+                    opcionID = sn.nextInt();
+                    if (opcionID < 0) {
+                        System.out.println("El ID debe ser un número positivo.");
+                    } else {
+                        idValido = true;
+                    }
+                } catch (InputMismatchException e) {
 
-            RandomAccessFile viajes = new RandomAccessFile("Viajes.dat", "r");
-            File fichero = new File("Reservas.dat");
-            ObjectInputStream dataIS = new ObjectInputStream(new FileInputStream(fichero));
+                    System.out.println("Por favor, introduce un número válido para el ID.");
+                    sn.next();
+                }
+            }
+
+
             int reservas = contarReservas(opcionID);
 
-            char aux;
-            long punteroCliente = (opcionID - 1) * 52;
 
             if (opcionID == 0) {
                 listarClientes();
@@ -383,25 +411,26 @@ public class Main_SerradillaGutierrezAlbertoActualiza {
         }
     }
 
+
     public static void listarClientes() throws IOException {
-        RandomAccessFile clientesFile = new RandomAccessFile("Clientes.dat", "r"); // Abrir en modo lectura
-        System.out.println("LISTADO DE LOS CLIENTES");
-        System.out.println("==================================================");
+        // Abrir en modo lectura
 
-        try {
-            clientesFile.seek(0); // Comenzar desde el inicio del archivo
+        try (RandomAccessFile clientes = new RandomAccessFile("Clientes.dat", "r")) {
+            System.out.println("LISTADO DE LOS CLIENTES");
+            System.out.println("==================================================");
+            clientes.seek(0); // Comenzar desde el inicio del archivo
 
-            while (clientesFile.getFilePointer() < clientesFile.length()) {
-                int id = clientesFile.readInt(); // Leer ID
+            while (clientes.getFilePointer() < clientes.length()) {
+                int id = clientes.readInt(); // Leer ID
                 StringBuilder nombreBuilder = new StringBuilder();
 
                 // Leer nombre (36 bytes: 18 caracteres de 2 bytes cada uno)
                 for (int i = 0; i < 18; i++) {
-                    nombreBuilder.append(clientesFile.readChar());
+                    nombreBuilder.append(clientes.readChar());
                 }
                 String nombre = nombreBuilder.toString().trim();
-                int viajesContratados = clientesFile.readInt(); // Leer viajes contratados
-                double importeTotal = clientesFile.readDouble(); // Leer importe total
+                int viajesContratados = clientes.readInt(); // Leer viajes contratados
+                double importeTotal = clientes.readDouble(); // Leer importe total
 
                 // Validar el registro para omitir datos vacíos
                 if (id == 0 && nombre.isEmpty() && viajesContratados == 0 && importeTotal == 0.00) {
@@ -413,16 +442,14 @@ public class Main_SerradillaGutierrezAlbertoActualiza {
                 System.out.printf("ID: %-3d, Nombre: %-18s, Viajes Contratados: %-3d, Importe: %,.2f\n",
                         id, nombre, viajesContratados, importeTotal);
             }
-        } finally {
-            clientesFile.close(); // Asegurar el cierre del archivo
         }
+        // Asegurar el cierre del archivo
     }
 
 
     private static boolean eliminarClientes(int id) throws IOException {
-        RandomAccessFile clientes = new RandomAccessFile("Clientes.dat", "rw");
 
-        try {
+        try (RandomAccessFile clientes = new RandomAccessFile("Clientes.dat", "rw")) {
             long punteroCliente = (id - 1) * 52; // Calculamos la posición del cliente
             if (verificarID(id)) { // Verificamos si el ID existe
                 clientes.seek(punteroCliente);
@@ -431,7 +458,7 @@ public class Main_SerradillaGutierrezAlbertoActualiza {
                 if (idLeido == id) {
                     clientes.seek(punteroCliente);
                     clientes.writeInt(id);
-                    StringBuffer nombreBuffer = new StringBuffer("*eliminado*");
+                    StringBuilder nombreBuffer = new StringBuilder("*eliminado*");
                     nombreBuffer.setLength(18);
                     clientes.writeChars(nombreBuffer.toString());
                     clientes.writeInt(-1);
@@ -441,8 +468,6 @@ public class Main_SerradillaGutierrezAlbertoActualiza {
             }
         } catch (IOException e) {
             e.printStackTrace();
-        } finally {
-            clientes.close();
         }
 
         return false; // Retornamos false si el cliente no existe o no se pudo eliminar
@@ -462,7 +487,7 @@ public class Main_SerradillaGutierrezAlbertoActualiza {
                     break; // Detener el bucle una vez encontrado
                 } else {
                     // Saltar al siguiente registro
-                    clientes.skipBytes(36+4+8); // Saltar nombre, viajes contratados, y importe
+                    clientes.skipBytes(36 + 4 + 8); // Saltar nombre, viajes contratados, y importe
                 }
             }
         }
@@ -514,7 +539,7 @@ public class Main_SerradillaGutierrezAlbertoActualiza {
                     viajes.seek(punteroViajes);
 
 
-                    int idV = viajes.readInt();
+                    viajes.readInt();
                     char[] descripcion = new char[32];
                     for (int i = 0; i < descripcion.length; i++) {
                         aux = viajes.readChar();
@@ -559,13 +584,14 @@ public class Main_SerradillaGutierrezAlbertoActualiza {
         // Mostrar el importe total de los viajes contratados
         info.append(String.format("\nImporte total : %.2f\n", importeTotal));
         info.append("===================================================================");
+        viajes.close();
+        clientes.close();
         return info.toString();
     }
 
     public static boolean verificarID(int id) throws IOException {
-        RandomAccessFile clientes = new RandomAccessFile("Clientes.dat", "r");
 
-        try {
+        try (RandomAccessFile clientes = new RandomAccessFile("Clientes.dat", "r")) {
             // Iterar sobre todos los registros de clientes
             while (clientes.getFilePointer() < clientes.length()) {
                 // Leer el ID actual
@@ -582,8 +608,6 @@ public class Main_SerradillaGutierrezAlbertoActualiza {
             }
         } catch (EOFException e) {
             // Manejo del fin del archivo
-        } finally {
-            clientes.close();
         }
 
         // Si no encontramos el ID, retornamos false
@@ -591,4 +615,3 @@ public class Main_SerradillaGutierrezAlbertoActualiza {
     }
 }
 
-//TODO resource leaks y cosas que ya no utilizo closear.
